@@ -39,30 +39,34 @@ void sapxepmang(int a[], int n)
 
 void timkiemnhiphan(int a[], int n, int x)
 {
-  int low = 0, high = n - 1, buoc = 0;
+  int mid, low = 0, high = n - 1, buoc = 0;
 
-  while(low <= high)
+  do
   {
-    int mid = (low + high) / 2;
-    if (a[mid] == x)
+  	if (a[mid] == x)
     {
       printf("\ntim duoc %d o vi tri thu %d", x, mid);
-      break;
-    }
-    else if (a[mid] < x)
+      buoc++;
+	}
+    mid = (low + high) / 2;
+    if (a[mid] < x)
     {
       low = mid + 1;
     }
-    else if (a[mid] > x) 
+    else 
     {
       high = mid - 1;
     }
-    else 
-    {
-      printf("\nso ban nhap khong ton tai ben trong mang");
-      break;
+  } while(low <= high);
+  
+	if (buoc > 0)
+	{
+		printf("\nso lan xuat hien cua %d la: %d", x, buoc);
     }
-  }
+    else
+	{
+		printf("\n%d khong ton tai ben trong mang", x);
+    }
 }
 
 int main(){
@@ -77,7 +81,6 @@ int main(){
 	printf("\nnhap x can tim trong mang:");
 		scanf("%d", &x);
 		
-	xuatmang(a, n);
 	timkiemnhiphan(a, n, x);
 return 0;
 }

@@ -19,17 +19,22 @@ void xuatmang(int a[50], int n)
 
 void timkiemtuyentinh(int a[50], int x, int n)
 {
+	int solanxuathien=0;
 	for(int i=0; i<n; i++)
 	{
-		if (x == a[i])
+		if (a[i] == x)
 		{
 			printf("\ntim thay %d o vi tri thu %d", x, i);
+			solanxuathien++;
 		}
-		else 
-		{
-			printf("\n%d khong xuat hien ben trong mang!", x);
-			break;
-		}
+	}
+	if(solanxuathien > 0)
+	{
+		printf("\nso lan xuat hien cua %d la %d", x, solanxuathien);
+	}
+	else
+	{
+		printf("\n%d khong xuat hien ben trong mang", x);
 	}
 }
 
