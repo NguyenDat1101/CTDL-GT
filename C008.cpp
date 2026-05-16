@@ -79,9 +79,48 @@ int CountLeaves(TREE Root, int *x){
 	}
 }
 
+void ThayNode(TREE* &A, TREE* &B){
+	if(B->pLeft !=NULL){
+		ThayNode(A, B->pLeft);
+	} else {
+		A->data = B->data;
+		A = B;
+		B = B->pRight;
+	}
+}
+
+void XoaNode(TREE* &Root, int x){
+	if(Root == NULL) return;
+	if(Root != NULL){
+		TREE tam;
+		if(x < Root->data) XoaNode(Root->pLeft, x);
+		else if(x > Root->data) XoaNode(Root->pRight, x);
+		else if(x == Root->data) {
+			if(Root->pLeft == NULL && Root->pRight == NULL) {
+				free(Root);
+				Root = NULL;
+			} 
+			else if(Root->pLeft == NULL){
+				tam = Root;
+				Root = Root->pRight;
+				free(tam);
+			}
+			else if(Root->pRight == NULL){
+				tam = Root;
+				Root = Root->pLeft;
+				free(tam);
+			}
+			else {
+				ThayNode(tam, Root->pRight);
+				free(tam);
+			}
+		}
+	}
+}
+
 int main(){
 	TREE caynhiphan = NULL;
-	int n, x, SoLuongNode=0, SoLuongNodeLa=0;
+	int n, x, SoLuongNode=0, SoLuongNodeLa=0, Khoa;
 	
 	printf("\n nhap so luong Node cho cay nhi phan:");
 		scanf("%d", &n);
@@ -103,5 +142,8 @@ int main(){
 	printf("\ndo cao cua cay nhi phan la:%d", docao);
 	CountLeaves(caynhiphan, &SoLuongNodeLa);
 	printf("\nso nut la trong cay nhi phan la:%d", SoLuongNodeLa);
+	printf("\nnhap khoa can xoa trong cay:");
+		scanf("%d", &Khoa);
+	XoaNode(caynhiphan, Khoa);
 return 0;
 }
