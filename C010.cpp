@@ -8,94 +8,71 @@ typedef struct stack{
 	int top;
 }STACK;
 
-typedef struct node{
-	STACK data;
-	node* pNext;
-}NODE;
-
-typedef struct list{
-	NODE* pHead;
-	NODE* pTail;
-}LIST;
-
-void ListInit(LIST* l){
-	l->pHead = NULL;
-	l->pTail = NULL;
-}
-
 void StackInit(STACK* s){
 	s->top = -1;
 }
 
-bool isEmpty(NODE* n){
-	if (n->data.top == -1) return true;
+bool isEmpty(STACK* n){
+	if (n->top == -1) return true;
 	else return false;
 }
 
-int push(NODE* n, char x){
-	if (n->data.top < 99){
-			n->data.top++;
-			n->data.kytu[n->data.top] = x;	
-	} else if (n->data->top == 99){
+int push(STACK* n, char x){
+	if (n->top < 99){
+			n->top++;
+			n->kytu[n->top] = x;
+			printf("\n push phan tu: %c", n->kytu[n->top]);
+	} else if (n->top == 99){
 		printf("\n Stack day");
 		return -1;
 	}
 }
 
-int pop(LIST* l){
-	NODE* n = l->pHead;
+char pop(STACK* n){
 	if (isEmpty(n) == true){
 		printf("\n Da pop het phan tu!");
 		return -1;
 	} else {
-		printf("\n Pop phan tu:%c", n->data.kytu[n->data.top]);
+		char x = n->kytu[n->top];
+		printf("\n Pop phan tu:%c", n->kytu[n->top]);
+		n->top--;
+		return x;
 		
 	}
 }
 
-NODE* CreateNode(STACK data){
-	NODE* newNode = (NODE*)malloc(sizeof(NODE));
-	if (newNode == NULL){
-		printf("\n cap phat bo nho khong thanh cong");
-		exit(0);
-	}else {
-		newNode->data = data;
-		newNode->pNext = NULL;
-	}
-	return newNode;
+bool KiemTraChuoi(char open, char close){
+	if (open == '(' && close == ')') return true;
+	if (open == '{' && close == '}') return true;
+	if (open == '[' && close == ']') return true;
+return false;
 }
 
-void ThemCuoi(LIST* l, NODE* newNode){
-	if (l->pHead == NULL){
-		l->pHead = newNode;
-		l->pTail = newNode;
-	} else {
-		l->pTail->pNext = newNode;
-		l->pTail = newNode;
-	}
-}
-
-void XoaBoNhoDem(){
-	int c;
-	while((c = getchar() != '\n' && c != EOF));
-}
-
-bool KiemTra(LIST* l){
-	NODE* Temp = l->pHead; 
-	while(Temp != NULL){
-		if ( (Temp->data.kytu) == ('(' || '{' || '[') ){
-			push(Temp, Temp->data.kytu);
-		} else if ( (Temp->data.kytu) == (')' || '}' || ']') ){
-			if(isEmpty(Temp) == true) return false;
-			else if ( ((Temp->data.kytu == ')') != (Temp->pNext.data.kytu == '(')) || 
-					  ((Temp->data.kytu == '}') != (Temp->pNext.data.kytu == '{')) ||
-					  ((Temp->data.kytu == ']') != (Temp->pNext.data.kytu == '[')) ) return false;
-			else {
-					
+bool HamKiemTra(char* Kytu){
+	STACK s;
+	StackInit(&s);
+	for(int i = 0; i<strlen(Kytu); i++){
+		if (Kytu[i] == '(' || Kytu[i] == '{' || Kytu[i] == '['){
+			push(&s, Kytu[i]);
+		}
+		else if (Kytu[i] == ')' || Kytu[i] == '}' || Kytu[i] == ']'){
+			if (isEmpty(&s)) return false;
+			char OpenChar = pop(&s);
+			if (!KiemTraChuoi(OpenChar, Kytu[i])) return false;
 			}
 		}
-	}
+return isEmpty(&s);
 }
 
 int main(){
+	char Kytu[100];
+	printf("\n nhap bieu thuc:");
+		fgets(Kytu, sizeof(Kytu), stdin);
+		Kytu[strcspn(Kytu, "\n")] = '\0';
+	if (HamKiemTra(Kytu)){
+		printf("\n chuoi hop le");
+	} else {
+		printf("\n chuoi khong hop le");
+	}
+return 0;
 }
